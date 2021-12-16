@@ -165,7 +165,8 @@ function App() {
     const toggleShowing = () => setShowing((prev) => !prev);
 
     const [visible, setVisible] = useState(1);
-    const nextPlz = () => setVisible(prev => prev === 10 ? 1 : prev + 1)
+    const nextPlz = () => setVisible(prev => prev === 10 ? 1 : prev + 1);
+    const prevPlz = () => setVisible(prev => prev === 1 ? 10 : prev - 1);
 
     return (
         // <Wrapper style={{background: gradient}}>
@@ -225,6 +226,7 @@ function App() {
                 )}
             </AnimatePresence>
             <button onClick={nextPlz}>nextPlz</button>
+            <button onClick={prevPlz}>prevPlz</button>
         </Wrapper>
     );
 }
