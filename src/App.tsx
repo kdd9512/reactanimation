@@ -2,6 +2,8 @@ import styled from "styled-components";
 import {motion, useMotionValue, useTransform, useViewportScroll, AnimatePresence} from "framer-motion";
 import {useEffect, useRef, useState} from "react";
 
+// Styled Components...
+
 const Wrapper = styled(motion.div)`
   height: 100vh;
   width: 100vw;
@@ -39,7 +41,7 @@ const AnotherBox = styled(motion.div)`
   border-radius: 35px;
   display: flex;
   position: absolute;
-  top:250px;
+  top: 250px;
   justify-content: center;
   align-items: center;
   font-size: 25px;
@@ -74,6 +76,9 @@ const Svg = styled.svg`
     stroke-width: 3;
   }
 `;
+
+
+// Variants...
 
 const boxVariants = {
     hover: {
@@ -116,29 +121,32 @@ const newBoxVariants = {
 
 }
 
+// AnimatePresence 2. custom variants
 const AnotherBoxVariants = {
-    invisible: {
-        x: 500,
+    entry: (back: boolean) => ({
+        x: back ? -500 : 500,
         opacity: 0,
         scale: 0,
-    },
-    visible: {
+    }),
+    centre: {
         x: 0,
         opacity: 1,
         scale: 1,
-        transition:{
-          duration:0.5,
+        transition: {
+            duration: 0.5,
         },
     },
-    exit: {
-        x: -500,
-        opacity: 0,
-        scale: 0,
-        transition:{
-            duration:0.5,
-        },
-    },
+    exit: (back: boolean) => ({
+            x: back ? 500 : -500,
+            opacity: 0,
+            scale: 0,
+            transition: {
+                duration: 0.5,
+            },
+        }
+    ),
 }
+
 
 
 function App() {
@@ -161,17 +169,28 @@ function App() {
         ]);
     const scale = useTransform(scrollYProgress, [0, 1], [1, 3]);
 
+
+    // AnimatePresence 1. basic
     const [showing, setShowing] = useState(false);
     const toggleShowing = () => setShowing((prev) => !prev);
 
+
+    // AnimatePresence 2. custom variants
     const [visible, setVisible] = useState(1);
-    const nextPlz = () => setVisible(prev => prev === 10 ? 1 : prev + 1);
-    const prevPlz = () => setVisible(prev => prev === 1 ? 10 : prev - 1);
+    const [back, setBack] = useState(false);
+    const nextPlz = () => {
+        setBack(false);
+        setVisible(prev => prev === 10 ? 1 : prev + 1);
+    };
+    const prevPlz = () => {
+        setBack(true);
+        setVisible(prev => prev === 1 ? 10 : prev - 1);
+    };
 
     return (
-        // <Wrapper style={{background: gradient}}>
 
-        // <Wrapper>
+        // Variants / Elastic / useTransform
+        // <Wrapper style={{background: gradient}}>
         //      {/*BigBox 의 DOM 요소를 참조하게 하기 위해 ref 를 설정한다. */}
         //     <BigBox ref={biggerBoxRef}>
         //     <Box
@@ -181,6 +200,7 @@ function App() {
         //     </BigBox>
         // </Wrapper>
 
+        // SVG Animation
         // <Wrapper>
         //     <Svg
         //         focusable="false"
@@ -202,6 +222,7 @@ function App() {
         //     </Svg>
         // </Wrapper>
 
+        // AnimatePresence 1. basic
         // <Wrapper>
         //     <button onClick={toggleShowing}>Click</button>
         //     <AnimatePresence>
@@ -214,16 +235,20 @@ function App() {
         //     </AnimatePresence>
         // </Wrapper>
 
+        // AnimatePresence 2. custom variants
+        // exitBeforeEnter : 이전 exit 가 실행을 "마쳐야" 다음 initial 을 실행하게 강제.
         <Wrapper>
-            <AnimatePresence>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) =>
-                    i === visible ? <AnotherBox
-                        variants={AnotherBoxVariants}
-                        initial="invisible"
-                        animate="visible"
-                        exit="exit"
-                        key={i}>{`i'm ${i}`}</AnotherBox> : null
-                )}
+            <AnimatePresence exitBeforeEnter custom={back}>
+                <AnotherBox
+                    custom={back}
+                    variants={AnotherBoxVariants}
+                    initial="entry"
+                    animate="centre"
+                    exit="exit"
+                    key={visible}
+                >
+                    {`i'm ${visible}`}
+                </AnotherBox>
             </AnimatePresence>
             <button onClick={nextPlz}>nextPlz</button>
             <button onClick={prevPlz}>prevPlz</button>
