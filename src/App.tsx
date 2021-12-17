@@ -17,7 +17,8 @@ const Box = styled(motion.div)`
   height: 20vw;
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: 5px;
-  justify-content: space-between;
+  display: flex;
+  justify-content: center;
   align-items: center;
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
@@ -65,22 +66,37 @@ function App() {
     return (
         <Wrapper onClick={toggleClicked}>
             <Grid>
-                {["1", "2", "3", "4"].map((num) => (
-                        <Box
-                            whileHover={{scale: 1.03, transition: {transform: .1}}}
-                            onClick={() => setId(num)}
-                            key={num} layoutId={num}
-                        >
-                            <AnimatePresence>
-                                {!switched ?
-                                    num === "2" && "3" ?
-                                        <Ball /> : <Ball />
-                                    : null
-                                }
-                            </AnimatePresence>
-                        </Box>
+                {["1", "2"].map((num) => (
+                    <Box
+                        whileHover={{scale: 1.03, transition: {transform: .1}}}
+                        onClick={() => setId(num)}
+                        key={num} layoutId={num}
+                    >
+                        <AnimatePresence>
+                            {!switched ?
+                                num === "2" ?
+                                    <Ball layoutId="ball"/> : null
+                                : null
+                            }
+                        </AnimatePresence>
+                    </Box>
                     )
                 )}
+                {["3","4"].map((num) => (
+                    <Box
+                        whileHover={{scale: 1.03, transition: {transform: .1}}}
+                        onClick={() => setId(num)}
+                        key={num} layoutId={num}
+                    >
+                        <AnimatePresence>
+                            {switched ?
+                                num === "3" ?
+                                    <Ball layoutId="ball"/> : null
+                                : null
+                            }
+                        </AnimatePresence>
+                    </Box>
+                ))}
             </Grid>
             <AnimatePresence>
                 {id ?
