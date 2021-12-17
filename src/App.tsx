@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {motion, useMotionValue, useTransform, useViewportScroll, AnimatePresence} from "framer-motion";
 import {useState} from "react";
 
+// Styled Components...
 
 const Wrapper = styled(motion.div)`
   height: 100vh;
@@ -48,18 +49,19 @@ const Overlay = styled(motion.div)`
   align-items: center;
 `;
 
+// Variants...
 
 const overlayVariants = {
     initial: {backgroundColor: "rgba(0, 0, 0, 0)"},
     animate: {backgroundColor: "rgba(0, 0, 0, 0.6)"},
     exit: {backgroundColor: "rgba(0, 0, 0, 0)"},
-}
+};
+
 
 function App() {
     const [clicked, setClicked] = useState(false);
     const [switched, setSwitched] = useState(false);
     const [id, setId] = useState<null | string>(null);
-    const [ballId, setBallId] = useState<null | string>(null);
 
     const toggleClicked = () => (
         setClicked(prev => !prev)
