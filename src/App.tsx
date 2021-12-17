@@ -49,6 +49,12 @@ const Overlay = styled(motion.div)`
 `;
 
 
+const overlayVariants = {
+    initial: {backgroundColor: "rgba(0, 0, 0, 0)"},
+    animate: {backgroundColor: "rgba(0, 0, 0, 0.6)"},
+    exit: {backgroundColor: "rgba(0, 0, 0, 0)"},
+}
+
 function App() {
     const [clicked, setClicked] = useState(false);
     const [switched, setSwitched] = useState(false);
@@ -113,13 +119,6 @@ function App() {
             <button onClick={toggleSwitch}>switch</button>
         </Wrapper>
     );
-}
-
-
-const overlayVariants = {
-    initial: {backgroundColor: "rgba(0, 0, 0, 0)"},
-    animate: {backgroundColor: "rgba(0, 0, 0, 0.6)"},
-    exit: {backgroundColor: "rgba(0, 0, 0, 0)"},
 }
 
 export default App;
